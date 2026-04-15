@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import LoginScreen from './components/LoginScreen';
 import BoardHeader from './components/BoardHeader';
 import TemplatePicker from './components/TemplatePicker';
 import BoardCell from './components/BoardCell';
@@ -33,6 +34,7 @@ function App() {
     cells: createCellsData(4),
   });
 
+  const [authed, setAuthed] = useState(() => localStorage.getItem('vb-auth') === 'true');
   const [selectedCell, setSelectedCell] = useState(null);
   const boardRef = useRef(null);
 
@@ -111,6 +113,10 @@ function App() {
   const handleSelectCell = (id) => {
     setSelectedCell(selectedCell === id ? null : id);
   };
+
+  if (!authed) {
+    return <LoginScreen onLogin={() => setAuthed(true)} />;
+  }
 
   return (
     <div className="app">
